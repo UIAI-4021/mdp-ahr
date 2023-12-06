@@ -27,9 +27,8 @@ if __name__ == '__main__':
     # Define the maximum number of iterations
     max_iter_number = 1000
 
-    for key , value in env.P.items():
-        print("key : "+str(key)+" --- value : "+str(value))
     P_values = env.P
+    V_old = np.zeros(shape=states_num)
 
     for __ in range(500):
         V_old=V.copy()
@@ -39,18 +38,15 @@ if __name__ == '__main__':
                 for prob, next_state, reward, _ in P_values[s][a]:
                     # print("prob : "+str(prob)+" --- next_state : "+str(next_state)+" --- reward : "+str(reward))
                     # input()
+                    if next_state == 47:
+                        reward = 100
                     q_values[a] += prob * (reward + discount_factory * V_old[next_state])
             V[s] = max(q_values)
             policy[s] = np.argmax(q_values)
 
     for __ in range(max_iter_number):
-        # TODO: Implement the agent policy here
-        # Note: .sample() is used to sample random action from the environment's action space
-        #
-        # Choose an action (Replace this random action with your agent's policy)
-        action = env.action_space.sample()
+        action = policy[observation]
 
-        # Perform the action and receive feedback from the environment
         next_state, reward, done, truncated, info = env.step(action)
         observation = next_state
 
