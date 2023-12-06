@@ -4,6 +4,15 @@ import numpy as np
 import random
 
 
+V = np.zeros(shape=48)
+Q = np.zeros(shape=(48, 4))
+discount_factory = 0.9
+
+
+def SetQTable(state, next_state, prob, action, reward):
+    pass
+
+
 if __name__ == '__main__':
     # Create an environment
     env = cw.CliffWalking(render_mode="human")
