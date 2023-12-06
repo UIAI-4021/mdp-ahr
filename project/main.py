@@ -12,6 +12,9 @@ if __name__ == '__main__':
     # Define the maximum number of iterations
     max_iter_number = 1000
 
+    for key , value in env.P.items():
+        print("key : "+str(key)+" --- value : "+str(value))
+
     for __ in range(max_iter_number):
         # TODO: Implement the agent policy here
         # Note: .sample() is used to sample random action from the environment's action space
