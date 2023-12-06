@@ -29,13 +29,20 @@ if __name__ == '__main__':
             q_values = np.zeros(action_num)
             for a in range(action_num):
                 for prob, next_state, reward, _ in P_values[s][a]:
-                    # print("prob : "+str(prob)+" --- next_state : "+str(next_state)+" --- reward : "+str(reward))
-                    # input()
                     if next_state == 47:
                         reward = 100
                     q_values[a] += prob * (reward + discount_factory * V_old[next_state])
             V[s] = max(q_values)
             policy[s] = np.argmax(q_values)
+
+    turns = ["Up", "Right", "Down", "Left"]
+
+    for i in range(len(V)):
+        print("i = " + str(i) + " ---> " + str(V[i]))
+
+    for i in range(len(policy)):
+        turn = int(policy[i])
+        print("i = " + str(i) + " ---> policy : " + str(turns[turn]))
 
     for __ in range(max_iter_number):
         action = policy[observation]
