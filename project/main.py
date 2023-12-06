@@ -12,13 +12,6 @@ action_num = 4
 policy = np.zeros(shape=states_num)
 
 
-def SetQTable(state, next_state, prob, action, reward):
-    r = reward
-    if state == next_state:
-        r = -100
-    Q[state][action] = prob * (r + discount_factory * V[next_state])
-
-
 if __name__ == '__main__':
     # Create an environment
     env = cw.CliffWalking(render_mode="human")
