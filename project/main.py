@@ -13,9 +13,9 @@ policy = np.zeros(shape=states_num)
 
 
 def value_iteration(P):
-    V_old = np.zeros(shape=states_num)
+    V_old = np.ones(shape=states_num)
 
-    for __ in range(500):
+    while np.abs(V-V_old).max()!=0:
         V_old = V.copy()
         for s in range(states_num):
             q_values = np.zeros(action_num)
