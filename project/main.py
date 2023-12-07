@@ -9,7 +9,15 @@ Q = np.zeros(shape=(48, 4))
 discount_factory = 0.9
 states_num = 48
 action_num = 4
+start_state = 36
+end_state = 47
 policy = np.zeros(shape=states_num)
+
+
+def getReward(next_state , r):
+    if next_state == end_state:
+        return 100
+    return r
 
 
 def value_iteration(P):
@@ -21,9 +29,7 @@ def value_iteration(P):
             q_values = np.zeros(action_num)
             for a in range(action_num):
                 for prob, next_state, reward, _ in P[s][a]:
-                    if next_state == 47:
-                        reward = 100
-                    q_values[a] += prob * (reward + discount_factory * V_old[next_state])
+                    q_values[a] += prob * (getReward(next_state,reward) + discount_factory * V_old[next_state])
             V[s] = max(q_values)
             policy[s] = np.argmax(q_values)
 
