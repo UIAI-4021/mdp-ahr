@@ -12,6 +12,22 @@ action_num = 4
 policy = np.zeros(shape=states_num)
 
 
+def value_iteration(P):
+    V_old = np.zeros(shape=states_num)
+
+    for __ in range(500):
+        V_old = V.copy()
+        for s in range(states_num):
+            q_values = np.zeros(action_num)
+            for a in range(action_num):
+                for prob, next_state, reward, _ in P[s][a]:
+                    if next_state == 47:
+                        reward = 100
+                    q_values[a] += prob * (reward + discount_factory * V_old[next_state])
+            V[s] = max(q_values)
+            policy[s] = np.argmax(q_values)
+
+
 if __name__ == '__main__':
     # Create an environment
     env = cw.CliffWalking(render_mode="human")
@@ -20,25 +36,9 @@ if __name__ == '__main__':
     # Define the maximum number of iterations
     max_iter_number = 1000
 
-    P_values = env.P
-    V_old = np.zeros(shape=states_num)
-
-    for __ in range(500):
-        V_old=V.copy()
-        for s in range(states_num):
-            q_values = np.zeros(action_num)
-            for a in range(action_num):
-                for prob, next_state, reward, _ in P_values[s][a]:
-                    if next_state == 47:
-                        reward = 100
-                    q_values[a] += prob * (reward + discount_factory * V_old[next_state])
-            V[s] = max(q_values)
-            policy[s] = np.argmax(q_values)
+    value_iteration(env.P)
 
     turns = ["Up", "Right", "Down", "Left"]
-
-    for i in range(len(V)):
-        print("i = " + str(i) + " ---> " + str(V[i]))
 
     for i in range(len(policy)):
         turn = int(policy[i])
