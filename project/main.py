@@ -22,6 +22,16 @@ def getReward(next_state, current_state, r):
     return re
 
 
+def check_worst(q_values):
+    if q_values[0] == q_values[2] or q_values[1] == q_values[3]:
+        if q_values[0] <= q_values[1]:
+            return 0
+        elif q_values[0] > q_values[1]:
+            return 1
+    else:
+        return np.argmax(q_values)
+
+
 def optimal_policy(P):
     V_old = np.ones(shape=states_num)
 
@@ -34,6 +44,7 @@ def optimal_policy(P):
                     q_values[a] += prob * (getReward(next_state, s, reward) + discount_factory * V_old[next_state])
             V[s] = max(q_values)
             policy[s] = np.argmax(q_values)
+            # policy[s] = check_worst(q_values)
 
 
 if __name__ == '__main__':
