@@ -2,12 +2,18 @@ import cliff_wakling as cw
 import numpy as np
 
 V = np.zeros(shape=48)
-discount_factory = 0.9
+discount_factory = 0.999
 states_num = 48
 action_num = 4
 start_state = 36
 end_state = 47
 policy = np.zeros(shape=states_num)
+
+
+def getReward(next_state , r):
+    if next_state == end_state:
+        return 4000
+    return r
 
 
 def check_cliff(state):
@@ -36,6 +42,7 @@ def optimal_policy(env):
     setCliffs(env)
 
     while np.abs(V - V_old).max() != 0:
+    # for _ in range(1000):
         V_old = V.copy()
         for s in range(states_num):
             if not check_cliff(s) and s != end_state:
@@ -47,7 +54,7 @@ def optimal_policy(env):
                             next_state = P_value[1]
                             reward = P_value[2]
 
-                            q_values[q] += (1 / 3) * (reward + discount_factory * V_old[next_state])
+                            q_values[q] += (1/3) * (getReward(next_state , reward) + discount_factory * V_old[next_state])
 
                 V[s] = max(q_values)
                 policy[s] = np.argmax(q_values)
@@ -77,6 +84,7 @@ if __name__ == '__main__':
 
         if done or truncated:
             observation, info = env.reset()
+            print("GET GOAL")
 
     # Close the environment
     env.close()
