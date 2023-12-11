@@ -23,10 +23,19 @@ def check_cliff(state):
     return False
 
 
+def setCliffs(env):
+    positions = env.cliff_positions
+
+    for cliffs in positions:
+        index = cliffs[0] * 12 + cliffs[1]
+        V[index] = -100
+
+
 def optimal_policy(env):
     V_old = np.ones(shape=states_num)
     P = env.P
     V[end_state] = 4000
+    setCliffs(env)
 
     for __ in range(2000):
         V_old = V.copy()
