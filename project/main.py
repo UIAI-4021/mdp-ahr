@@ -14,9 +14,9 @@ policy = np.zeros(shape=states_num)
 
 def check_cliff(state):
     positions = env.cliff_positions
-    row = state//12
-    column = state%12
-    value = (row , column)
+    row = state // 12
+    column = state % 12
+    value = (row, column)
 
     if value in positions:
         return True
@@ -37,20 +37,20 @@ def optimal_policy(env):
     V[end_state] = 4000
     setCliffs(env)
 
-    for __ in range(2000):
+    while np.abs(V - V_old).max() != 0:
         V_old = V.copy()
         for s in range(states_num):
-            q_values = np.zeros(shape=action_num)
-            for q in range(action_num):
-                if not check_cliff(s) and s != end_state:
+            if not check_cliff(s) and s != end_state:
+                q_values = np.zeros(shape=action_num)
+                for q in range(action_num):
                     for a in range(action_num):
-                        if abs(q-a)!=2:
+                        if abs(q - a) != 2:
                             P_value = P[s][a][0]
                             next_state = P_value[1]
                             reward = P_value[2]
 
-                            q_values[q] += (1/3) * (reward + discount_factory * V_old[next_state])
-            if not check_cliff(s) and s != end_state:
+                            q_values[q] += (1 / 3) * (reward + discount_factory * V_old[next_state])
+
                 V[s] = max(q_values)
                 policy[s] = np.argmax(q_values)
 
