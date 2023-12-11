@@ -1,7 +1,5 @@
 import cliff_wakling as cw
-import cv2
 import numpy as np
-import random
 
 V = np.zeros(shape=48)
 discount_factory = 0.9
